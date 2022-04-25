@@ -14,7 +14,13 @@ class Wordle
             String data = s.nextLine();
             
             System.out.println(data);
+            
+            if (data.length = 5)
+            {
+                System.out.println(data);
+            }
         }
+        
         
         s.close();
     }
