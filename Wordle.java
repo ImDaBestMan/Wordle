@@ -127,12 +127,45 @@ class Wordle
         return null;
     }
     
+    void showHints(String lastGuess)
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            if (secretWord.charAt(i) == lastGuess.charAt(i))
+            {
+                System.out.println("The letter " + lastGuess.charAt(i) + 
+                " is good, it's in the right spot.");
+            }
+            else if (secretWord.contains("" + lastGuess.charAt(i))) // right letter, wrong spot
+            {
+                System.out.println("The letter " + lastGuess.charAt(i) + 
+                " is ok, it's in the wrong spot.");
+            }
+            else
+            {
+                System.out.println("The letter " + lastGuess.charAt(i) + 
+                " is bad, it's not in the word.");
+            }
+        }
+    }
+    
     void play() throws FileNotFoundException
     {
         for (int i = 0; i < 6; i++)
         {
             guessWord();
-            System.out.println(playerGuesses[i]);
+            String lastGuess = playerGuesses[i];
+            System.out.println("You guessed " + lastGuess);
+            showHints(lastGuess);
+            if (secretWord.equals(lastGuess))
+            {
+                System.out.println("Congratulations, the word is : " + secretWord);
+                return;
+            }
+        }
+        if (guesses == 0)
+        {
+            System.out.println("Game Over, the word is : " + secretWord);
         }
     }
 }

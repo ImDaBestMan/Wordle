@@ -1,8 +1,11 @@
 #BlueJ package file
+dependency1.from=WordleApp
+dependency1.to=Wordle
+dependency1.type=UsesDependency
 editor.fx.0.height=739
-editor.fx.0.width=820
-editor.fx.0.x=232
-editor.fx.0.y=2
+editor.fx.0.width=818
+editor.fx.0.x=275
+editor.fx.0.y=0
 objectbench.height=122
 objectbench.width=801
 package.divider.horizontal=0.600297176820208
@@ -13,7 +16,7 @@ package.editor.x=0
 package.editor.y=0
 package.frame.height=744
 package.frame.width=1382
-package.numDependencies=0
+package.numDependencies=1
 package.numTargets=4
 package.showExtends=true
 package.showUses=true
