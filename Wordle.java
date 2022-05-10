@@ -116,7 +116,7 @@ class Wordle
             number++;
             if (number == randIndex)
             {
-                return data;
+                return data.toUpperCase();
             }
         }
 
