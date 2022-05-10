@@ -25,6 +25,8 @@ public class WordleApp extends Application
         output = new TextArea();
         input = new TextField();
         
+        input.set
+        
         output.setText("Welcome to Wordle\nEnter a guess:");
         output.setEditable(false);
         output.setMaxHeight(100);
@@ -47,7 +49,17 @@ public class WordleApp extends Application
     
     void handleInput(ActionEvent e)
     {
+        String keyboard = input.getText().toUpperCase();
+        input.clear();
         
+        try
+        {
+            game.guessWordApp(keyboard);
+        }
+        catch (java.io.FileNotFoundException fnfe)
+        {
+            fnfe.printStackTrace();
+        }
     }
     
     void drawSquare(double x, double y, String letter)

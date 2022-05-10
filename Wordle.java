@@ -48,6 +48,23 @@ class Wordle
         playerGuesses[6 - guesses] = guess;
         guesses--;
     }
+    
+    void guessWordApp(String guess) throws FileNotFoundException
+    {
+        if (guess.length() != 5)
+        {
+            System.out.println("5 letters please!");
+        }
+        else if (isInList(guess) == false)
+        {
+            System.out.println("What is that word?");
+        }
+        else
+        {
+            playerGuesses[6 - guesses] = guess;
+            guesses--;
+        }
+    }
 
     static void wordList() throws FileNotFoundException
     {
