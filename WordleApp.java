@@ -11,6 +11,9 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
+import java.io.OutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 
 public class WordleApp extends Application
 {
@@ -18,14 +21,19 @@ public class WordleApp extends Application
     TextField input;
     GraphicsContext gc;
     Wordle game;
+
     public void start(Stage stage)
     {
         game = new Wordle();
         
         output = new TextArea();
         input = new TextField();
-        
-        input.set
+
+        //Redirect "System.out.println()" to print to the text display window
+        Console console = new Console(output);
+        PrintStream ps = new PrintStream(console, true);
+        System.setOut(ps);
+        System.setErr(ps);
         
         output.setText("Welcome to Wordle\nEnter a guess:");
         output.setEditable(false);
@@ -113,4 +121,21 @@ public class WordleApp extends Application
             drawSquare(z, y, "");
         }
     }
+}
+
+class Console extends OutputStream
+{
+    TextArea output;
+
+    public Console(TextArea ta)
+    {
+        this.output = ta;
+    }
+
+    @Override
+    public void write(int i) throws IOException
+    {
+        output.appendText(String.valueOf((char) i));
+    }
+
 }
