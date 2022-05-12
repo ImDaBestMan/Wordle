@@ -35,7 +35,7 @@ public class WordleApp extends Application
         System.setOut(ps);
         System.setErr(ps);
 
-        output.setText("Welcome to Wordle\nThe secret word is " + game.secretWord + "\nEnter a guess:\n\n");
+        output.setText("Welcome to Wordle\nThe secret word is " + game.secretWord + "\nEnter a guess:\n");
         output.setEditable(false);
         output.setMaxHeight(100);
         input.requestFocus();
@@ -57,6 +57,11 @@ public class WordleApp extends Application
 
     void handleInput(ActionEvent e)
     {
+        if (game.guesses == 0)
+        {
+            System.out.println("Game Over, the word is: " + game.secretWord);
+        }
+        
         String keyboard = input.getText().toUpperCase();
         input.clear();
         System.out.println("You guessed: " + keyboard);
@@ -110,7 +115,7 @@ public class WordleApp extends Application
                 }
                 drawSquare(x, y, letter);
             }
-            
+
             y += 80;
         }
     }
@@ -134,8 +139,8 @@ public class WordleApp extends Application
             drawSquare(z, y, "");
         }
     }
-}
 
+}
 class Console extends OutputStream
 {
     TextArea output;
