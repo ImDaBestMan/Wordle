@@ -25,7 +25,7 @@ public class WordleApp extends Application
     public void start(Stage stage)
     {
         game = new Wordle();
-        
+
         output = new TextArea();
         input = new TextField();
 
@@ -34,13 +34,13 @@ public class WordleApp extends Application
         PrintStream ps = new PrintStream(console, true);
         System.setOut(ps);
         System.setErr(ps);
-        
-        output.setText("Welcome to Wordle\nEnter a guess:");
+
+        output.setText("Welcome to Wordle\nThe secret word is " + game.secretWord + "\nEnter a guess:\n\n");
         output.setEditable(false);
         output.setMaxHeight(100);
         input.requestFocus();
         input.setOnAction(this::handleInput);
-        
+
         Canvas canvas = new Canvas(700, 500);
         VBox container = new VBox();
         container.getChildren().addAll(canvas, output, input);
@@ -54,12 +54,12 @@ public class WordleApp extends Application
 
         drawRows();
     }
-    
+
     void handleInput(ActionEvent e)
     {
         String keyboard = input.getText().toUpperCase();
         input.clear();
-        
+        System.out.println("You guessed: " + keyboard);
         try
         {
             game.guessWordApp(keyboard);
@@ -68,8 +68,10 @@ public class WordleApp extends Application
         {
             fnfe.printStackTrace();
         }
+
+        drawWord();
     }
-    
+
     void drawSquare(double x, double y, String letter)
     {
         // gc.setFill(Color.LIGHTGRAY);
@@ -77,31 +79,42 @@ public class WordleApp extends Application
         gc.setFill(Color.LIGHTGRAY);
         gc.setFont(Font.font("Courier New", FontPosture.REGULAR, 50));
         gc.fillText(letter, x + 20, y + 55);
-        
+
     }
-    
-    void drawWord(String word)
+
+    void drawWord()
     {
-        for (int i = 0; i < 5; i++)
+        double y = 0;
+        for (String word : game.playerGuesses)
         {
-            double x = 75 + (100 * i);
-            String letter = "" + word.charAt(i);
-            if (game.secretWord.charAt(i) == word.charAt(i))
+            if (word == null)
             {
-                gc.setFill(Color.LIMEGREEN);
+                return;
             }
-            else if (game.secretWord.contains("" + word.charAt(i))) // right letter, wrong spot
+            
+            for (int i = 0; i < 5; i++)
             {
-                gc.setFill(Color.BURLYWOOD);
+                double x = 75 + (100 * i);
+                String letter = "" + word.charAt(i);
+                if (game.secretWord.charAt(i) == word.charAt(i))
+                {
+                    gc.setFill(Color.LIMEGREEN);
+                }
+                else if (game.secretWord.contains("" + word.charAt(i))) // right letter, wrong spot
+                {
+                    gc.setFill(Color.BURLYWOOD);
+                }
+                else
+                {
+                    gc.setFill(Color.INDIANRED);
+                }
+                drawSquare(x, y, letter);
             }
-            else
-            {
-                gc.setFill(Color.INDIANRED);
-            }
-            drawSquare(x, 75, letter);
+            
+            y += 80;
         }
     }
-    
+
     void drawRows()
     {
         gc.setFill(Color.LIGHTGRAY);
@@ -111,13 +124,13 @@ public class WordleApp extends Application
             drawRow(50,y);
         }
     }
-    
+
     void drawRow(double x, double y)
     {
         for (int i = 0; i < 5; i++)
         {
-            double z = 75 + (120 * i);
-            
+            double z = 75 + (100 * i);
+
             drawSquare(z, y, "");
         }
     }
