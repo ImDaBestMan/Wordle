@@ -22,6 +22,18 @@ class Wordle
         this.playerGuesses = new String[6];
     }
     
+    boolean checkWin()
+    {
+        for (String g : playerGuesses)
+        {
+            if(g != null && g.equals(secretWord))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     void guessWord() throws FileNotFoundException
     {
         Scanner s = new Scanner(System.in);

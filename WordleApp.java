@@ -57,11 +57,6 @@ public class WordleApp extends Application
 
     void handleInput(ActionEvent e)
     {
-        if (game.guesses == 0)
-        {
-            System.out.println("Game Over, the word is: " + game.secretWord);
-        }
-        
         String keyboard = input.getText().toUpperCase();
         input.clear();
         System.out.println("You guessed: " + keyboard);
@@ -73,8 +68,22 @@ public class WordleApp extends Application
         {
             fnfe.printStackTrace();
         }
-
+        
         drawWord();
+        
+        if (game.checkWin() == true)
+        {
+            System.out.println("Congratulations! The word is: " + game.secretWord);
+            game = new Wordle();
+            return;
+        }
+        else if (game.guesses == 0)
+        {
+            System.out.println("Game Over! The word is: " + game.secretWord);
+            input.clear();
+            game = new Wordle();
+            return;
+        }
     }
 
     void drawSquare(double x, double y, String letter)
