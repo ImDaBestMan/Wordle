@@ -31,7 +31,7 @@ public class WordleApp extends Application
         output = new TextArea();
         input = new TextField();
         
-        Button restartButton = new Button("Restart Game");
+        Button restartButton = new Button("Reset Game");
         HBox bottomBar = new HBox(input, restartButton);
 
         //Redirect "System.out.println()" to print to the text display window
@@ -40,7 +40,7 @@ public class WordleApp extends Application
         System.setOut(ps);
         System.setErr(ps);
 
-        output.setText("Welcome to Wordle\nThe secret word is " + game.secretWord + "\nEnter a guess:\n");
+        output.setText("Welcome to Wordle\nEnter a guess:\n");
         output.setEditable(false);
         output.setMaxHeight(100);
         input.requestFocus();
@@ -48,7 +48,7 @@ public class WordleApp extends Application
         input.setMinWidth(500);
         
         
-        restartButton.setOnAction(this::restartGame);
+        restartButton.setOnAction(this::handleRestartButton);
 
         Canvas canvas = new Canvas(700, 500);
         VBox container = new VBox();
@@ -64,16 +64,28 @@ public class WordleApp extends Application
         drawRows();
     }
     
-    void restartGame(ActionEvent e)
+    void handleRestartButton(ActionEvent e)
     {
+        restartGame();
+    }
+    
+    void restartGame()
+    {
+        input.setDisable(false);
         game = new Wordle();
         output.clear();
         drawRows();
-        output.setText("Welcome to Wordle\nThe secret word is " + game.secretWord + "\nEnter a guess:\n");
+        output.setText("Welcome to Wordle\nEnter a guess:\n");
     }
 
     void handleInput(ActionEvent e)
     {
+        if (game.checkWin() == true || game.guesses == 0)
+        {
+            input.setDisable(true);
+            return;
+        }
+        
         String keyboard = input.getText().toUpperCase();
         input.clear();
         System.out.println("You guessed: " + keyboard);
@@ -91,14 +103,14 @@ public class WordleApp extends Application
         if (game.checkWin() == true)
         {
             System.out.println("Congratulations! The word is: " + game.secretWord);
-            game = new Wordle();
+            input.setDisable(true);
             return;
         }
         else if (game.guesses == 0)
         {
             System.out.println("Game Over! The word is: " + game.secretWord);
+            input.setDisable(true);
             input.clear();
-            game = new Wordle();
             return;
         }
     }
