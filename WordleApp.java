@@ -2,7 +2,9 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -28,6 +30,9 @@ public class WordleApp extends Application
 
         output = new TextArea();
         input = new TextField();
+        
+        Button restartButton = new Button("Restart Game");
+        HBox bottomBar = new HBox(input, restartButton);
 
         //Redirect "System.out.println()" to print to the text display window
         Console console = new Console(output);
@@ -40,10 +45,14 @@ public class WordleApp extends Application
         output.setMaxHeight(100);
         input.requestFocus();
         input.setOnAction(this::handleInput);
+        input.setMinWidth(500);
+        
+        
+        restartButton.setOnAction(this::restartGame);
 
         Canvas canvas = new Canvas(700, 500);
         VBox container = new VBox();
-        container.getChildren().addAll(canvas, output, input);
+        container.getChildren().addAll(canvas, output, bottomBar);
         gc = canvas.getGraphicsContext2D();
 
         Scene scene = new Scene(container);
@@ -53,6 +62,14 @@ public class WordleApp extends Application
         stage.show();
 
         drawRows();
+    }
+    
+    void restartGame(ActionEvent e)
+    {
+        game = new Wordle();
+        output.clear();
+        drawRows();
+        output.setText("Welcome to Wordle\nThe secret word is " + game.secretWord + "\nEnter a guess:\n");
     }
 
     void handleInput(ActionEvent e)
